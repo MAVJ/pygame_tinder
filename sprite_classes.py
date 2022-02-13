@@ -2,11 +2,12 @@ import os
 import glob
 import re
 import pygame
-from pygame import mixer
+# from pygame import mixer
 
 # Define constants for the screen width and height
 scaling = 0.85
-FR = 40  # Speed animation starts selected
+FR = 27  # Speed animation starts once selected
+FRA = 25  # Speed animation and
 SCREEN_WIDTH = 1250
 SCREEN_HEIGHT = SCREEN_WIDTH * scaling
 
@@ -40,6 +41,30 @@ class Cover(pygame.sprite.Sprite):
         self.image = self.images[self.index]
 
 
+class Controllers(pygame.sprite.Sprite):
+    def __init__(self):
+        super(Controllers, self).__init__()
+        self.images = []
+        count = 0
+        array = glob.glob(os.path.join(path_main_design, 'Controller', "*.png"))
+        array.sort(key=lambda f: int(re.sub('\D', '', f)))
+        for star in array:
+            count += 1
+            image = pygame.image.load(star).convert_alpha().convert_alpha()
+            image = pygame.transform.smoothscale(image, (SCREEN_WIDTH * 0.4676, SCREEN_HEIGHT * 0.612))
+            self.images.append(image)
+        self.index = 0
+        self.numb_images = count
+        self.image = self.images[self.index]
+        self.rect = pygame.Rect(SCREEN_WIDTH / 2.71, SCREEN_HEIGHT / 10.8, 150, 198)
+
+    def update(self):
+        self.index += 1
+        if self.index == len(self.images):
+            self.index = 0
+        self.image = self.images[self.index]
+
+
 class Stars1(pygame.sprite.Sprite):
     def __init__(self):
         super(Stars1, self).__init__()
@@ -55,14 +80,14 @@ class Stars1(pygame.sprite.Sprite):
             image = pygame.transform.smoothscale(image, (SCREEN_WIDTH * 0.451, SCREEN_HEIGHT * 0.0955))
             self.images.append(image)
         self.index = 0
-        self.intro_images = count
+        self.numb_images = count
         self.image = self.images[self.index]
         self.rect = pygame.Rect(SCREEN_WIDTH * 0.376, SCREEN_HEIGHT * 0.729, 150, 198)
 
     def update(self):
         self.index += 1
-        if self.index >= self.intro_images and self.index == len(self.images):
-            self.index = self.intro_images
+        if self.index >= self.numb_images and self.index == len(self.images):
+            self.index = self.numb_images
         self.image = self.images[self.index]
 
 
@@ -81,14 +106,14 @@ class Stars2(pygame.sprite.Sprite):
             image = pygame.transform.smoothscale(image, (SCREEN_WIDTH * 0.451, SCREEN_HEIGHT * 0.0955))
             self.images.append(image)
         self.index = 0
-        self.intro_images = count
+        self.numb_images = count
         self.image = self.images[self.index]
         self.rect = pygame.Rect(SCREEN_WIDTH * 0.376, SCREEN_HEIGHT * 0.729, 150, 198)
 
     def update(self):
         self.index += 1
-        if self.index >= self.intro_images and self.index == len(self.images):
-            self.index = self.intro_images
+        if self.index >= self.numb_images and self.index == len(self.images):
+            self.index = self.numb_images
         self.image = self.images[self.index]
 
 
@@ -169,7 +194,84 @@ class Opening(pygame.sprite.Sprite):
         super(Opening, self).__init__()
         self.images = []
         count = 0
-        array = glob.glob(os.path.join(path_main_design, 'open', "*.png"))
+        array = glob.glob(os.path.join(path_main_design, 'big_curtain', 'to_intro', "*.png"))
+        array.sort(key=lambda f: int(re.sub('\D', '', f)))
+        for star in array:
+            count += 1
+            image = pygame.image.load(star).convert_alpha()
+            image = pygame.transform.smoothscale(image, (SCREEN_WIDTH * 0.4676, SCREEN_HEIGHT * 0.612))
+            self.images.append(image)
+        self.index = 0
+        self.numb_images = count
+        self.image = self.images[self.index]
+        self.rect = pygame.Rect(SCREEN_WIDTH / 2.71, SCREEN_HEIGHT / 10.8, 150, 198)
+
+    def update(self):
+        self.index += 1
+        if self.index == len(self.images):
+            self.index = 0
+        self.image = self.images[self.index]
+
+
+#################################################################################################################
+
+class Covertoinstructions(pygame.sprite.Sprite):
+    def __init__(self):
+        super(Covertoinstructions, self).__init__()
+        self.images = []
+        count = 0
+        array = glob.glob(os.path.join(path_main_design, 'cortinilla_media', 'to_dark', "*.png"))
+        array.sort(key=lambda f: int(re.sub('\D', '', f)))
+        for star in array:
+            count += 1
+            image = pygame.image.load(star).convert_alpha()
+            image = pygame.transform.smoothscale(image, (SCREEN_WIDTH * 0.4676, SCREEN_HEIGHT * 0.612))
+            self.images.append(image)
+        self.index = 0
+        self.numb_images = count
+        self.image = self.images[self.index]
+        self.rect = pygame.Rect(SCREEN_WIDTH / 2.71, SCREEN_HEIGHT / 10.8, 150, 198)
+
+    def update(self):
+        self.index += 1
+        if self.index == len(self.images):
+            self.index = 0
+        self.image = self.images[self.index]
+
+
+class Closebigscreen(pygame.sprite.Sprite):
+    def __init__(self):
+        super(Closebigscreen, self).__init__()
+        self.images = []
+        count = 0
+        array = glob.glob(os.path.join(path_main_design, 'big_curtain', 'to_score', "*.png"))
+        array.sort(key=lambda f: int(re.sub('\D', '', f)))
+        for star in array:
+            count += 1
+            image = pygame.image.load(star).convert_alpha()
+            image = pygame.transform.smoothscale(image, (SCREEN_WIDTH * 0.4676, SCREEN_HEIGHT * 0.612))
+            self.images.append(image)
+        self.index = 0
+        self.numb_images = count
+        self.image = self.images[self.index]
+        self.rect = pygame.Rect(SCREEN_WIDTH / 2.71, SCREEN_HEIGHT / 10.8, 150, 198)
+
+    def update(self):
+        self.index += 1
+        if self.index == len(self.images):
+            self.index = 0
+        self.image = self.images[self.index]
+
+
+#################################################################################################################
+
+
+class Close1(pygame.sprite.Sprite):
+    def __init__(self):
+        super(Close1, self).__init__()
+        self.images = []
+        count = 0
+        array = glob.glob(os.path.join(path_main_design, 'new_openclose', '1', "*.png"))
         array.sort(key=lambda f: int(re.sub('\D', '', f)))
         for star in array:
             count += 1
@@ -188,12 +290,60 @@ class Opening(pygame.sprite.Sprite):
         self.image = self.images[self.index]
 
 
-class Close(pygame.sprite.Sprite):
+class Close2(pygame.sprite.Sprite):
     def __init__(self):
-        super(Close, self).__init__()
+        super(Close2, self).__init__()
         self.images = []
         count = 0
-        array = glob.glob(os.path.join(path_main_design, 'close', "*.png"))
+        array = glob.glob(os.path.join(path_main_design, 'new_openclose', '2', "*.png"))
+        array.sort(key=lambda f: int(re.sub('\D', '', f)))
+        for star in array:
+            count += 1
+            image = pygame.image.load(star).convert_alpha()
+            image = pygame.transform.smoothscale(image, (SCREEN_WIDTH / 2.2, SCREEN_HEIGHT / 2.8))
+            self.images.append(image)
+        self.index = 0
+        self.numb_images = count
+        self.image = self.images[self.index]
+        self.rect = pygame.Rect(SCREEN_WIDTH * 0.375, SCREEN_HEIGHT * 0.1, 150, 198)
+
+    def update(self):
+        self.index += 1
+        if self.index == len(self.images):
+            self.index = 0
+        self.image = self.images[self.index]
+
+
+class Close3(pygame.sprite.Sprite):
+    def __init__(self):
+        super(Close3, self).__init__()
+        self.images = []
+        count = 0
+        array = glob.glob(os.path.join(path_main_design, 'new_openclose', '3', "*.png"))
+        array.sort(key=lambda f: int(re.sub('\D', '', f)))
+        for star in array:
+            count += 1
+            image = pygame.image.load(star).convert_alpha()
+            image = pygame.transform.smoothscale(image, (SCREEN_WIDTH / 2.2, SCREEN_HEIGHT / 2.8))
+            self.images.append(image)
+        self.index = 0
+        self.numb_images = count
+        self.image = self.images[self.index]
+        self.rect = pygame.Rect(SCREEN_WIDTH * 0.375, SCREEN_HEIGHT * 0.1, 150, 198)
+
+    def update(self):
+        self.index += 1
+        if self.index == len(self.images):
+            self.index = 0
+        self.image = self.images[self.index]
+
+
+class Close4(pygame.sprite.Sprite):
+    def __init__(self):
+        super(Close4, self).__init__()
+        self.images = []
+        count = 0
+        array = glob.glob(os.path.join(path_main_design, 'new_openclose', '4', "*.png"))
         array.sort(key=lambda f: int(re.sub('\D', '', f)))
         for star in array:
             count += 1
@@ -380,6 +530,102 @@ class Pub(pygame.sprite.Sprite):
         self.index = 0
         self.image = self.images[self.index]
         self.rect = pygame.Rect(SCREEN_WIDTH / 2.655, SCREEN_HEIGHT / 10, 150, 198)
+
+    def update(self):
+        self.index += 1
+        if self.index == len(self.images):
+            self.index = 0
+        self.image = self.images[self.index]
+
+
+class Credits1(pygame.sprite.Sprite):
+    def __init__(self):
+        super(Credits1, self).__init__()
+        self.images = []
+        count = 0
+        array = glob.glob(os.path.join(path_main_design, 'credits', 'Elkin', "*.png"))
+        array.sort(key=lambda f: int(re.sub('\D', '', f)))
+        for star in array:
+            count += 1
+            image = pygame.image.load(star).convert_alpha().convert_alpha()
+            image = pygame.transform.smoothscale(image, (SCREEN_WIDTH * 0.455 * 0.2, SCREEN_HEIGHT * 0.365 * 0.3))
+            self.images.append(image)
+        self.index = 0
+        self.numb_images = count
+        self.image = self.images[self.index]
+        self.rect = pygame.Rect(SCREEN_WIDTH * 0.415, SCREEN_HEIGHT / 10, 150, 198)
+
+    def update(self):
+        self.index += 1
+        if self.index == len(self.images):
+            self.index = 0
+        self.image = self.images[self.index]
+
+
+class Credits2(pygame.sprite.Sprite):
+    def __init__(self):
+        super(Credits2, self).__init__()
+        self.images = []
+        count = 0
+        array = glob.glob(os.path.join(path_main_design, 'credits', 'Pao', "*.png"))
+        array.sort(key=lambda f: int(re.sub('\D', '', f)))
+        for star in array:
+            count += 1
+            image = pygame.image.load(star).convert_alpha().convert_alpha()
+            image = pygame.transform.smoothscale(image, (SCREEN_WIDTH * 0.455 * 0.2, SCREEN_HEIGHT * 0.365 * 0.3))
+            self.images.append(image)
+        self.index = 0
+        self.numb_images = count
+        self.image = self.images[self.index]
+        self.rect = pygame.Rect(SCREEN_WIDTH * 0.515, SCREEN_HEIGHT / 10, 150, 198)
+
+    def update(self):
+        self.index += 1
+        if self.index == len(self.images):
+            self.index = 0
+        self.image = self.images[self.index]
+
+
+class Credits3(pygame.sprite.Sprite):
+    def __init__(self):
+        super(Credits3, self).__init__()
+        self.images = []
+        count = 0
+        array = glob.glob(os.path.join(path_main_design, 'credits', 'Miguel', "*.png"))
+        array.sort(key=lambda f: int(re.sub('\D', '', f)))
+        for star in array:
+            count += 1
+            image = pygame.image.load(star).convert_alpha().convert_alpha()
+            image = pygame.transform.smoothscale(image, (SCREEN_WIDTH * 0.455 * 0.2, SCREEN_HEIGHT * 0.365 * 0.3))
+            self.images.append(image)
+        self.index = 0
+        self.numb_images = count
+        self.image = self.images[self.index]
+        self.rect = pygame.Rect(SCREEN_WIDTH * 0.615, SCREEN_HEIGHT / 10, 150, 198)
+
+    def update(self):
+        self.index += 1
+        if self.index == len(self.images):
+            self.index = 0
+        self.image = self.images[self.index]
+
+
+class Credits4(pygame.sprite.Sprite):
+    def __init__(self):
+        super(Credits4, self).__init__()
+        self.images = []
+        count = 0
+        array = glob.glob(os.path.join(path_main_design, 'credits', 'Ramona', "*.png"))
+        array.sort(key=lambda f: int(re.sub('\D', '', f)))
+        for star in array:
+            count += 1
+            image = pygame.image.load(star).convert_alpha().convert_alpha()
+            image = pygame.transform.smoothscale(image, (SCREEN_WIDTH * 0.455 * 0.2, SCREEN_HEIGHT * 0.365 * 0.3))
+            self.images.append(image)
+        self.index = 0
+        self.numb_images = count
+        self.image = self.images[self.index]
+        self.rect = pygame.Rect(SCREEN_WIDTH * 0.715, SCREEN_HEIGHT / 10, 150, 198)
 
     def update(self):
         self.index += 1

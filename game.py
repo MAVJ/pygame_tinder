@@ -6,7 +6,7 @@ from pygame import mixer
 
 # Initialize the pygame
 pygame.init()
-
+pygame.display.set_caption('Single Club Pululo (Elkin Lover)')
 # Configuration
 font_title = 'fonts/04B_30__.TTF'
 font_text = 'fonts/04B_03__.TTF'
@@ -22,9 +22,9 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 # Background
 background = pygame.image.load(path_main_design + 'Tinder_egg_screen_full.png').convert_alpha()
 background = pygame.transform.smoothscale(background, (SCREEN_WIDTH, SCREEN_HEIGHT))
-# controllers
-controllers = pygame.image.load(path_main_design + 'controller.png').convert_alpha()
-controllers = pygame.transform.smoothscale(controllers, (SCREEN_WIDTH * 0.4676, SCREEN_HEIGHT * 0.612))
+background2 = pygame.image.load(path_main_design + 'Tinder_egg_screen_full_2.png').convert_alpha()
+background2 = pygame.transform.smoothscale(background2, (SCREEN_WIDTH, SCREEN_HEIGHT))
+
 # score
 scoring = pygame.image.load(path_main_design + 'Score_Frames.png').convert_alpha()
 scoring = pygame.transform.smoothscale(scoring, (SCREEN_WIDTH * 0.4676, SCREEN_HEIGHT * 0.612))
@@ -35,16 +35,26 @@ bar = pygame.transform.smoothscale(bar, (SCREEN_WIDTH * 0.4676 * 0.97, SCREEN_HE
 text_space = pygame.image.load(path_main_design + 'text_space.png').convert_alpha()
 text_space = pygame.transform.smoothscale(text_space, (SCREEN_WIDTH * 0.4676, SCREEN_HEIGHT * 0.612 * 0.25))
 
-
 # Define sprite groups
+controllers_group = pygame.sprite.Group(Controllers())
 intro_1_group = pygame.sprite.Group(Stars1())
 intro_2_group = pygame.sprite.Group(Stars2())
 cover_group = pygame.sprite.Group(Cover())
 group_open = pygame.sprite.Group(Opening())
-close_group = pygame.sprite.Group(Close())
+# Closing
+close_profile_1 = pygame.sprite.Group(Close1())
+close_profile_2 = pygame.sprite.Group(Close2())
+close_profile_3 = pygame.sprite.Group(Close3())
+close_profile_4 = pygame.sprite.Group(Close4())
+# Transitions
+cover_to_instructions = pygame.sprite.Group(Covertoinstructions())
+close_to_score_group = pygame.sprite.Group(Closebigscreen())
+
+# Stars
 group_grade_1 = pygame.sprite.Group(OneStars())
 group_grade_2 = pygame.sprite.Group(TwoStars())
 group_grade_3 = pygame.sprite.Group(ThreeStars())
+
 # Sprites animations eggs
 kino_group = pygame.sprite.Group(Kino())
 art_group = pygame.sprite.Group(Art())
@@ -55,6 +65,12 @@ pub_group = pygame.sprite.Group(Pub())
 sado_group = pygame.sprite.Group(Sado())
 fitness_group = pygame.sprite.Group(Fitness())
 
+# Sprites animations eggs
+credits_elkin = pygame.sprite.Group(Credits1())
+credits_pao = pygame.sprite.Group(Credits2())
+credits_miguel = pygame.sprite.Group(Credits3())
+credits_ramona = pygame.sprite.Group(Credits4())
+
 
 # Definitions
 def draw_image(images=None, coordinates=(0, 0)):
@@ -63,6 +79,7 @@ def draw_image(images=None, coordinates=(0, 0)):
     pygame.display.update()
 
 
+# Draw stars
 def draw_stars(index):
     # Creating the sprites and groups
     clock = pygame.time.Clock()
@@ -73,36 +90,7 @@ def draw_stars(index):
         intro_2_group.update()
         intro_2_group.draw(screen)
     pygame.display.update()
-    clock.tick(20)
-
-
-def draw_cover():
-    # Creating the sprites and groups
-    clock = pygame.time.Clock()
-    cover_group.update()
-    cover_group.draw(screen)
-    pygame.display.update()
-    clock.tick(15)
-
-
-def draw_opening():
-    # Creating the sprites and groups
-    clock = pygame.time.Clock()
-    for _ in range(Opening().numb_images - 1):
-        group_open.update()
-        group_open.draw(screen)
-        pygame.display.update()
-        clock.tick(5)
-
-
-def draw_closing():
-    # Creating the sprites and groups
-    clock = pygame.time.Clock()
-    for _ in range(Close().numb_images - 1):
-        close_group.update()
-        close_group.draw(screen)
-        pygame.display.update()
-        clock.tick(10)
+    clock.tick(FRA)
 
 
 def draw_selection_one_stars():
@@ -135,13 +123,167 @@ def draw_selection_three_stars():
         clock.tick(FR)
 
 
+def draw_cover():
+    # Creating the sprites and groups
+    clock = pygame.time.Clock()
+    cover_group.update()
+    cover_group.draw(screen)
+    pygame.display.update()
+    clock.tick(15)
+
+
+def draw_controllers():
+    # Creating the sprites and groups
+    clock = pygame.time.Clock()
+    controllers_group.update()
+    controllers_group.draw(screen)
+    pygame.display.update()
+    clock.tick(5)
+
+
+def draw_controllers_2():
+    # Creating the sprites and groups
+    clock = pygame.time.Clock()
+    for _ in range(Controllers().numb_images * 2):
+        controllers_group.update()
+        controllers_group.draw(screen)
+        pygame.display.update()
+        clock.tick(5)
+
+
+# Transitions
+def draw_cover_to_instructions():
+    # Creating the sprites and groups
+    clock = pygame.time.Clock()
+    for _ in range(Covertoinstructions().numb_images - 1):
+        cover_to_instructions.update()
+        cover_to_instructions.draw(screen)
+        pygame.display.update()
+        clock.tick(15)
+
+
+# Opening
+def draw_opening():
+    # Creating the sprites and groups
+    clock = pygame.time.Clock()
+    for _ in range(Opening().numb_images - 1):
+        group_open.update()
+        group_open.draw(screen)
+        pygame.display.update()
+        draw_image(background, (0, 0))
+        clock.tick(30)
+
+
+# Closing
+def draw_closing_1():
+    # Creating the sprites and groups
+    clock = pygame.time.Clock()
+    for _ in range(Close1().numb_images - 1):
+        close_profile_1.update()
+        close_profile_1.draw(screen)
+        pygame.display.update()
+        clock.tick(25)
+
+
+def draw_closing_2():
+    # Creating the sprites and groups
+    clock = pygame.time.Clock()
+    for _ in range(Close2().numb_images - 1):
+        close_profile_2.update()
+        close_profile_2.draw(screen)
+        pygame.display.update()
+        clock.tick(25)
+
+
+def draw_closing_3():
+    # Creating the sprites and groups
+    clock = pygame.time.Clock()
+    for _ in range(Close3().numb_images - 1):
+        close_profile_3.update()
+        close_profile_3.draw(screen)
+        pygame.display.update()
+        clock.tick(25)
+
+
+def draw_closing_4():
+    # Creating the sprites and groups
+    clock = pygame.time.Clock()
+    for _ in range(Close4().numb_images - 1):
+        close_profile_4.update()
+        close_profile_4.draw(screen)
+        pygame.display.update()
+        clock.tick(25)
+
+
+def draw_closing_score():
+    # Creating the sprites and groups
+    clock = pygame.time.Clock()
+    for _ in range(Closebigscreen().numb_images - 1):
+        close_to_score_group.update()
+        close_to_score_group.draw(screen)
+        pygame.display.update()
+        clock.tick(50)
+
+
+# Credits
+def credits_1():
+    # Creating the sprites and groups
+    clock = pygame.time.Clock()
+    for _ in range(Credits1().numb_images * 4):
+        credits_elkin.update()
+        credits_elkin.draw(screen)
+        pygame.display.update()
+        clock.tick(15)
+
+
+def credits_2():
+    # Creating the sprites and groups
+    clock = pygame.time.Clock()
+    for _ in range(Credits2().numb_images * 4):
+        credits_pao.update()
+        credits_pao.draw(screen)
+        pygame.display.update()
+        clock.tick(15)
+
+
+def credits_3():
+    # Creating the sprites and groups
+    clock = pygame.time.Clock()
+    for _ in range(Credits3().numb_images * 4):
+        credits_miguel.update()
+        credits_miguel.draw(screen)
+        pygame.display.update()
+        clock.tick(15)
+
+
+def credits_4():
+    # Creating the sprites and groups
+    clock = pygame.time.Clock()
+    for _ in range(Credits4().numb_images * 3):
+        credits_ramona.update()
+        credits_ramona.draw(screen)
+        pygame.display.update()
+        clock.tick(15)
+
+
+def credits_5(profile_dic):
+    # Creating the sprites and groups
+    clock = pygame.time.Clock()
+    font = pygame.font.Font(font_text, 36)
+    for i in [0, 1, 2, 3]:
+        text_surface = font.render(profile_dic['Final_words']['text'][i][1:-1], True, white, black)
+        screen.blit(text_surface, (SCREEN_WIDTH * 0.405, SCREEN_HEIGHT * (0.3 + 0.05 * i)))
+        clock.tick(15)
+
+
+# Profiles
 def reproduce_kino():
     # Creating the sprites and groups
     clock = pygame.time.Clock()
     kino_group.update()
     kino_group.draw(screen)
     pygame.display.update()
-    clock.tick(20)
+    clock.tick(FRA)
 
 
 def reproduce_beach():
@@ -150,7 +292,7 @@ def reproduce_beach():
     beach_group.update()
     beach_group.draw(screen)
     pygame.display.update()
-    clock.tick(20)
+    clock.tick(FRA)
 
 
 def reproduce_art():
@@ -159,7 +301,7 @@ def reproduce_art():
     art_group.update()
     art_group.draw(screen)
     pygame.display.update()
-    clock.tick(20)
+    clock.tick(FRA)
 
 
 def reproduce_pub():
@@ -168,7 +310,7 @@ def reproduce_pub():
     pub_group.update()
     pub_group.draw(screen)
     pygame.display.update()
-    clock.tick(20)
+    clock.tick(FRA)
 
 
 def reproduce_sado():
@@ -177,7 +319,7 @@ def reproduce_sado():
     sado_group.update()
     sado_group.draw(screen)
     pygame.display.update()
-    clock.tick(20)
+    clock.tick(FRA)
 
 
 def reproduce_park():
@@ -186,7 +328,7 @@ def reproduce_park():
     park_group.update()
     park_group.draw(screen)
     pygame.display.update()
-    clock.tick(20)
+    clock.tick(FRA)
 
 
 def reproduce_fitness():
@@ -195,7 +337,7 @@ def reproduce_fitness():
     fitness_group.update()
     fitness_group.draw(screen)
     pygame.display.update()
-    clock.tick(20)
+    clock.tick(FRA)
 
 
 def reproduce_koffee():
@@ -204,7 +346,7 @@ def reproduce_koffee():
     koffee_group.update()
     koffee_group.draw(screen)
     pygame.display.update()
-    clock.tick(20)
+    clock.tick(FRA)
 
 
 # Text displaying tools
@@ -231,17 +373,17 @@ def text_ani(string, coordinates):
     # y = y * line_space  # shift text down by one line
     char = ''  # new string that will take text one char at a time. Not the best variable name I know.
     letter = 0
-    count = 0
     for i in range(len(string)):
         pygame.event.clear()
-        pygame.time.wait(80)  # change this for faster or slower text animation
+        pygame.time.wait(65)  # change this for faster or slower text animation
         char = char + string[letter]
         text = font.render(char, False, black, grey)  # First tuple is text color, second tuple is background color
-        text_rect = text.get_rect(topleft=(x, y))
-        text_rect.center = (x, y)
-        screen.blit(text, text_rect)
+        screen.blit(text, text.get_rect(topleft=(x, y)).move(40, 0))
         pygame.display.update()  # update only the text just added without removing previous lines.
-        count += 1
+        if string[letter] != ' ':
+            mixer.Channel(0).play(mixer.Sound('music/typing_sound_3.wav'))
+            pygame.time.wait(20)
+            mixer.stop()
         letter += 1
 
 
@@ -271,6 +413,9 @@ def update_scores(dic_previous, dic_to_update):
     return dic_to_update
 
 
+#################################################################################################################
+
+
 # Main events
 def starting_menu():
     # draw_image(cover, (SCREEN_WIDTH / 2.71, SCREEN_HEIGHT / 10.8))
@@ -282,8 +427,80 @@ def starting_menu():
     blink_surfaces = cycle([on_text_surface, off_text_surface])
     blink_surface = next(blink_surfaces)
     pygame.time.set_timer(BLINK_EVENT, 1000)
-    mixer.Sound('music/first_try_song.wav').play()
+    intro = pygame.mixer.Sound('music/first_try_song.wav')
+    intro.play()
     click_to_play = False
+    while not click_to_play:
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    click_to_play = True
+                    intro.set_volume(0.75)
+                    mixer.Sound('music/start_pressed.wav').play()
+                    pygame.time.wait(1500)
+                    mixer.stop()
+                elif event.key == pygame.K_DOWN:
+                    click_to_play = True
+                    intro.set_volume(0.75)
+                    mixer.Sound('music/start_pressed.wav').play()
+                    pygame.time.wait(1500)
+                    mixer.stop()
+                elif event.key == pygame.K_RIGHT:
+                    click_to_play = True
+                    intro.set_volume(0.75)
+                    mixer.Sound('music/start_pressed.wav').play()
+                    pygame.time.wait(1500)
+                    mixer.stop()
+                mixer.stop()
+            if event.type == BLINK_EVENT:
+                blink_surface = next(blink_surfaces)
+
+        screen.blit(blink_surface, blink_rect)
+        pygame.display.update()
+        draw_cover()
+
+
+def Credits():
+    profile_dic = {}
+    names = os.listdir('display_animations/credits/')
+    for name_profile in names:
+        path_txt = os.path.join(path_main_design, 'credits', name_profile, '{}.txt'.format(name_profile))
+        with open(path_txt) as f:
+            lines = f.readlines()
+        prof = {'text': {0: lines[0][:-1].upper(),
+                         1: lines[1][:-1].upper(),
+                         2: lines[2][:-1].upper(),
+                         3: lines[3][:-1].upper(),
+                         }
+                }
+        profile_dic['{}'.format(name_profile)] = prof
+    draw_image(background2, (0, 0))
+    font = pygame.font.Font(font_text, 36)
+    for i in [0, 1]:
+        text_surface = font.render(profile_dic['Elkin']['text'][i][1:-1], True, white, black)
+        screen.blit(text_surface, (SCREEN_WIDTH * 0.405, SCREEN_HEIGHT * (0.3 + 0.05 * i)))
+    credits_1()
+    for i in [0, 1]:
+        text_surface = font.render(profile_dic['Pao']['text'][i][1:-1], True, white, black)
+        screen.blit(text_surface, (SCREEN_WIDTH * 0.405, SCREEN_HEIGHT * (0.3 + 0.05 * i)))
+    credits_2()
+    for i in [0, 1, 2]:
+        text_surface = font.render(profile_dic['Miguel']['text'][i][1:-1], True, white, black)
+        screen.blit(text_surface, (SCREEN_WIDTH * 0.405, SCREEN_HEIGHT * (0.3 + 0.05 * i)))
+    credits_3()
+    for i in [0, 1, 2]:
+        text_surface = font.render(profile_dic['Ramona']['text'][i][1:-1], True, white, black)
+        screen.blit(text_surface, (SCREEN_WIDTH * 0.405, SCREEN_HEIGHT * (0.3 + 0.05 * i)))
+    credits_4()
+    for i in [0, 1, 2, 3]:
+        text_surface = font.render(profile_dic['Final_words']['text'][i][1:-1], True, white, black)
+        screen.blit(text_surface, (SCREEN_WIDTH * 0.405, SCREEN_HEIGHT * (0.3 + 0.05 * i)))
+    pygame.time.delay(2500)
+
+
+def instructions():
+    click_to_play = False
+    draw_cover_to_instructions()
     while not click_to_play:
 
         for event in pygame.event.get():
@@ -294,18 +511,18 @@ def starting_menu():
                     click_to_play = True
                 elif event.key == pygame.K_RIGHT:
                     click_to_play = True
-            if event.type == BLINK_EVENT:
-                blink_surface = next(blink_surfaces)
 
-        screen.blit(blink_surface, blink_rect)
-        pygame.display.update()
-        draw_cover()
-    mixer.stop()
+        draw_controllers()
+
+    # draw_closing_score()
+    draw_cover_to_instructions()
+    draw_image(background2, (0, 0))
 
 
-def instructions():
-    draw_image(controllers, (SCREEN_WIDTH / 2.71, SCREEN_HEIGHT / 10.8))
-    pygame.time.delay(500)
+def instructions_2():
+    draw_cover_to_instructions()
+    draw_controllers()
+    draw_cover_to_instructions()
     draw_image(background, (0, 0))
 
 
@@ -352,6 +569,24 @@ def get_profiles():
 
 def run_profiles(profiles_dictionary):
     for i, profile in enumerate(list(profiles_dictionary.keys())):
+        if profiles_dictionary[profile]['id'] == 'Kino':
+            pygame.mixer.music.load('music/midnight_kino.wav')
+        elif profiles_dictionary[profile]['id'] == 'Beach':
+            pygame.mixer.music.load('music/cult_of_summer.wav')
+        elif profiles_dictionary[profile]['id'] == 'Fitness':
+            pygame.mixer.music.load('music/poundy_up.wav')
+        elif profiles_dictionary[profile]['id'] == 'Pub':
+            pygame.mixer.music.load('music/to_julito.wav')
+        elif profiles_dictionary[profile]['id'] == 'Art':
+            pygame.mixer.music.load('music/coroninho_pinho.wav')
+        elif profiles_dictionary[profile]['id'] == 'Sado':
+            pygame.mixer.music.load('music/fis_to_ing.wav')
+        elif profiles_dictionary[profile]['id'] == 'Koffee':
+            pygame.mixer.music.load('music/exotic_coffee_shop.wav')
+        elif profiles_dictionary[profile]['id'] == 'Park':
+            pygame.mixer.music.load('music/duck_rap.wav')
+
+        pygame.mixer.music.play(loops=-1)
         draw_image(profiles_dictionary[profile]['image'], (SCREEN_WIDTH / 2.655, SCREEN_HEIGHT / 10))
         pygame.time.delay(1000)
         # draw_opening()
@@ -360,7 +595,7 @@ def run_profiles(profiles_dictionary):
                           (SCREEN_WIDTH * 0.40, SCREEN_HEIGHT * 0.505),
                           white)
         plot_split_text(profiles_dictionary[profile]['text'][random.randint(0, 2)], 23,
-                        (SCREEN_WIDTH * 0.605, SCREEN_HEIGHT * 0.572))
+                        (SCREEN_WIDTH * 0.605 - 300, SCREEN_HEIGHT * 0.572 - 12))
         scored = False
         while not scored:
             if profiles_dictionary[profile]['id'] == 'Kino':
@@ -385,24 +620,48 @@ def run_profiles(profiles_dictionary):
                     if event.key == pygame.K_LEFT:
                         profiles_dictionary[profile]['score'] += 1
                         scored = True
+                        mixer.Sound('music/one_star.wav').play()
                         draw_selection_one_stars()
                         draw_image(text_space, (SCREEN_WIDTH * 0.3675, SCREEN_HEIGHT * 0.553))
                         pygame.time.delay(500)
                         draw_image(bar, (SCREEN_WIDTH * 0.3755, SCREEN_HEIGHT * 0.4956))
+                        mixer.stop()
                     elif event.key == pygame.K_DOWN:
                         profiles_dictionary[profile]['score'] += 2
                         scored = True
+                        mixer.Sound('music/two_stars.wav').play()
                         draw_selection_two_stars()
                         draw_image(text_space, (SCREEN_WIDTH * 0.3675, SCREEN_HEIGHT * 0.553))
                         draw_image(bar, (SCREEN_WIDTH * 0.3755, SCREEN_HEIGHT * 0.4956))
+                        mixer.stop()
                     elif event.key == pygame.K_RIGHT:
                         profiles_dictionary[profile]['score'] += 3
                         scored = True
+                        mixer.Sound('music/three_stars.wav').play()
                         draw_selection_three_stars()
                         draw_image(text_space, (SCREEN_WIDTH * 0.3675, SCREEN_HEIGHT * 0.553))
                         draw_image(bar, (SCREEN_WIDTH * 0.3755, SCREEN_HEIGHT * 0.4956))
+                        mixer.stop()
+        pygame.mixer.music.stop()
+        if i == 0:
+            draw_closing_1()
+        elif i == 1:
+            draw_closing_2()
+        elif i == 2:
+            draw_closing_3()
+        elif i == 3:
+            draw_closing_4()
+        elif i == 4:
+            draw_closing_1()
+        elif i == 5:
+            draw_closing_2()
+        elif i == 6:
+            draw_closing_3()
+        elif i == 7:
+            draw_closing_4()
+        pygame.time.delay(2000)
 
-        draw_closing()
+    draw_closing_score()
 
 
 def ending_screen(profiles_dictionary):
@@ -455,6 +714,8 @@ def main():
         ending_screen(profile_dic)
         # Save results
         save_dictionary(profile_dic)
+        # credits
+        Credits()
 
 
 if __name__ == '__main__':
