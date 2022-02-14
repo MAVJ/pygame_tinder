@@ -1,5 +1,6 @@
 import pickle
 import random
+import time
 from itertools import cycle
 from sprite_classes import *
 from pygame import mixer
@@ -159,7 +160,7 @@ def draw_cover_to_instructions():
         cover_to_instructions.update()
         cover_to_instructions.draw(screen)
         pygame.display.update()
-        clock.tick(15)
+        clock.tick(40)
 
 
 # Opening
@@ -351,14 +352,15 @@ def reproduce_koffee():
 
 # Text displaying tools
 def display_text_info(name, age, coordinates, color):
-    font = pygame.font.Font(font_title, 45)
+    font = pygame.font.Font(font_title, 27)
     text_surface = font.render('{}, {}'.format(name, age), True, color)
     screen.blit(text_surface, coordinates)
     pygame.display.update()
 
 
 def display_score_info(name, score, y, color):
-    font = pygame.font.Font(font_title, 45)
+    # Scores screen
+    font = pygame.font.Font(font_title, 32)
     text_surface = font.render('{}'.format(name), True, color)
     text_surface_2 = font.render('{}'.format(score), True, color)
     screen.blit(text_surface, (SCREEN_WIDTH * 0.465, y))
@@ -368,7 +370,7 @@ def display_score_info(name, score, y, color):
 
 def text_ani(string, coordinates):
     # line_space = 2
-    font = pygame.font.Font(font_text, 36)
+    font = pygame.font.Font(font_text, 23)
     x, y = coordinates
     # y = y * line_space  # shift text down by one line
     char = ''  # new string that will take text one char at a time. Not the best variable name I know.
@@ -392,7 +394,7 @@ def plot_split_text(string, limit, coordinates):
     chunks = [(n, len(n)) for n in chunks]
     x, y = coordinates
     for i, txt in enumerate(chunks):
-        text_ani(txt[0], (x, (y + i * 27)))
+        text_ani(txt[0], (x, (y + i * 19)))
     pygame.time.delay(750)
 
 
@@ -419,7 +421,7 @@ def update_scores(dic_previous, dic_to_update):
 # Main events
 def starting_menu():
     # draw_image(cover, (SCREEN_WIDTH / 2.71, SCREEN_HEIGHT / 10.8))
-    font = pygame.font.Font(font_title, 29)
+    font = pygame.font.Font(font_title, 18)
     on_text_surface = font.render('Press Any Key To Start', True, pygame.Color('green3'))
     blink_rect = on_text_surface.get_rect()
     blink_rect.center = (SCREEN_WIDTH * 0.605, SCREEN_HEIGHT * 0.775)
@@ -427,80 +429,53 @@ def starting_menu():
     blink_surfaces = cycle([on_text_surface, off_text_surface])
     blink_surface = next(blink_surfaces)
     pygame.time.set_timer(BLINK_EVENT, 1000)
-    intro = pygame.mixer.Sound('music/first_try_song.wav')
-    intro.play()
+    pygame.mixer.music.load('music/pululos_theme.wav')
+    pygame.mixer.music.play(loops=-1)
+
     click_to_play = False
     while not click_to_play:
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
+                    pygame.mixer.music.stop()
                     click_to_play = True
-                    intro.set_volume(0.75)
-                    mixer.Sound('music/start_pressed.wav').play()
-                    pygame.time.wait(1500)
+                    # intro.set_volume(0.75)
+                    pygame.mixer.music.load('music/pululos_ending_echo.wav')
+                    pygame.mixer.music.set_volume(0.35)
+                    pygame.mixer.music.play(loops=-1)
+                    mixer.Channel(0).play(mixer.Sound('music/start_pressed.wav'))
+                    pygame.time.wait(2500)
                     mixer.stop()
                 elif event.key == pygame.K_DOWN:
+                    pygame.mixer.music.stop()
                     click_to_play = True
-                    intro.set_volume(0.75)
-                    mixer.Sound('music/start_pressed.wav').play()
-                    pygame.time.wait(1500)
+                    pygame.mixer.music.load('music/pululos_ending_echo.wav')
+                    pygame.mixer.music.set_volume(0.35)
+                    pygame.mixer.music.play(loops=-1)
+                    mixer.Channel(0).play(mixer.Sound('music/start_pressed.wav'))
+                    pygame.time.wait(2500)
                     mixer.stop()
                 elif event.key == pygame.K_RIGHT:
+                    pygame.mixer.music.stop()
                     click_to_play = True
-                    intro.set_volume(0.75)
-                    mixer.Sound('music/start_pressed.wav').play()
-                    pygame.time.wait(1500)
+                    pygame.mixer.music.load('music/pululos_ending_echo.wav')
+                    pygame.mixer.music.set_volume(0.35)
+                    pygame.mixer.music.play(loops=-1)
+                    mixer.Channel(0).play(mixer.Sound('music/start_pressed.wav'))
+                    pygame.time.wait(2500)
                     mixer.stop()
-                mixer.stop()
+                pygame.mixer.music.stop()
             if event.type == BLINK_EVENT:
                 blink_surface = next(blink_surfaces)
-
         screen.blit(blink_surface, blink_rect)
-        pygame.display.update()
+        # pygame.display.update()
         draw_cover()
-
-
-def Credits():
-    profile_dic = {}
-    names = os.listdir('display_animations/credits/')
-    for name_profile in names:
-        path_txt = os.path.join(path_main_design, 'credits', name_profile, '{}.txt'.format(name_profile))
-        with open(path_txt) as f:
-            lines = f.readlines()
-        prof = {'text': {0: lines[0][:-1].upper(),
-                         1: lines[1][:-1].upper(),
-                         2: lines[2][:-1].upper(),
-                         3: lines[3][:-1].upper(),
-                         }
-                }
-        profile_dic['{}'.format(name_profile)] = prof
-    draw_image(background2, (0, 0))
-    font = pygame.font.Font(font_text, 36)
-    for i in [0, 1]:
-        text_surface = font.render(profile_dic['Elkin']['text'][i][1:-1], True, white, black)
-        screen.blit(text_surface, (SCREEN_WIDTH * 0.405, SCREEN_HEIGHT * (0.3 + 0.05 * i)))
-    credits_1()
-    for i in [0, 1]:
-        text_surface = font.render(profile_dic['Pao']['text'][i][1:-1], True, white, black)
-        screen.blit(text_surface, (SCREEN_WIDTH * 0.405, SCREEN_HEIGHT * (0.3 + 0.05 * i)))
-    credits_2()
-    for i in [0, 1, 2]:
-        text_surface = font.render(profile_dic['Miguel']['text'][i][1:-1], True, white, black)
-        screen.blit(text_surface, (SCREEN_WIDTH * 0.405, SCREEN_HEIGHT * (0.3 + 0.05 * i)))
-    credits_3()
-    for i in [0, 1, 2]:
-        text_surface = font.render(profile_dic['Ramona']['text'][i][1:-1], True, white, black)
-        screen.blit(text_surface, (SCREEN_WIDTH * 0.405, SCREEN_HEIGHT * (0.3 + 0.05 * i)))
-    credits_4()
-    for i in [0, 1, 2, 3]:
-        text_surface = font.render(profile_dic['Final_words']['text'][i][1:-1], True, white, black)
-        screen.blit(text_surface, (SCREEN_WIDTH * 0.405, SCREEN_HEIGHT * (0.3 + 0.05 * i)))
-    pygame.time.delay(2500)
+    draw_cover_to_instructions()
 
 
 def instructions():
     click_to_play = False
-    draw_cover_to_instructions()
+    # draw_cover_to_instructions()
     while not click_to_play:
 
         for event in pygame.event.get():
@@ -517,13 +492,6 @@ def instructions():
     # draw_closing_score()
     draw_cover_to_instructions()
     draw_image(background2, (0, 0))
-
-
-def instructions_2():
-    draw_cover_to_instructions()
-    draw_controllers()
-    draw_cover_to_instructions()
-    draw_image(background, (0, 0))
 
 
 def get_profiles():
@@ -568,6 +536,7 @@ def get_profiles():
 
 
 def run_profiles(profiles_dictionary):
+
     for i, profile in enumerate(list(profiles_dictionary.keys())):
         if profiles_dictionary[profile]['id'] == 'Kino':
             pygame.mixer.music.load('music/midnight_kino.wav')
@@ -595,8 +564,10 @@ def run_profiles(profiles_dictionary):
                           (SCREEN_WIDTH * 0.40, SCREEN_HEIGHT * 0.505),
                           white)
         plot_split_text(profiles_dictionary[profile]['text'][random.randint(0, 2)], 23,
-                        (SCREEN_WIDTH * 0.605 - 300, SCREEN_HEIGHT * 0.572 - 12))
+                        (SCREEN_WIDTH * 0.605 - 200, SCREEN_HEIGHT * 0.572 - 12))
         scored = False
+        start_time = time.time()
+        time_out = 240
         while not scored:
             if profiles_dictionary[profile]['id'] == 'Kino':
                 reproduce_kino()
@@ -615,6 +586,7 @@ def run_profiles(profiles_dictionary):
             elif profiles_dictionary[profile]['id'] == 'Art':
                 reproduce_art()
             draw_stars(i)
+            current_time = time.time()
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_LEFT:
@@ -642,6 +614,9 @@ def run_profiles(profiles_dictionary):
                         draw_image(text_space, (SCREEN_WIDTH * 0.3675, SCREEN_HEIGHT * 0.553))
                         draw_image(bar, (SCREEN_WIDTH * 0.3755, SCREEN_HEIGHT * 0.4956))
                         mixer.stop()
+            elapsed_time = current_time - start_time
+            if elapsed_time > time_out:
+                main()
         pygame.mixer.music.stop()
         if i == 0:
             draw_closing_1()
@@ -661,10 +636,10 @@ def run_profiles(profiles_dictionary):
             draw_closing_4()
         pygame.time.delay(2000)
 
-    draw_closing_score()
-
 
 def ending_screen(profiles_dictionary):
+    # draw_closing_score()
+    # draw_cover_to_instructions()
     draw_image(scoring, (SCREEN_WIDTH / 2.71, SCREEN_HEIGHT / 10.8))
     pygame.time.delay(100)
     run = True
@@ -672,13 +647,14 @@ def ending_screen(profiles_dictionary):
         sort_orders = sorted(profiles_dictionary.items(), key=lambda x: x[1]['score'], reverse=False)
         for i in range(len(sort_orders)):
             pygame.time.delay(1000)
-            draw_image(sort_orders[i][1]['mini_image'], (SCREEN_WIDTH * 0.39, SCREEN_HEIGHT * (1 - 0.0715 * i) - 395))
+            draw_image(sort_orders[i][1]['mini_image'], (SCREEN_WIDTH * 0.39, SCREEN_HEIGHT * (1 - 0.0725 * i) - 250))
             display_score_info(sort_orders[i][1]['name'],
                                sort_orders[i][1]['score'],
-                               SCREEN_HEIGHT * (1 - 0.0715 * i) - 385,
+                               SCREEN_HEIGHT * (1 - 0.0725 * i) - 245,
                                white)
         run = False
     pygame.time.delay(5000)
+    draw_cover_to_instructions()
 
 
 def save_dictionary(results):
@@ -687,6 +663,49 @@ def save_dictionary(results):
         summary[element[0]] = element[1]['score']
     with open('meta_data/scores_dictionary.pkl', 'wb') as f:
         pickle.dump(summary, f)
+
+
+def Credits():
+    profile_dic = {}
+    names = os.listdir('display_animations/credits/')
+    for name_profile in names:
+        path_txt = os.path.join(path_main_design, 'credits', name_profile, '{}.txt'.format(name_profile))
+        with open(path_txt) as f:
+            lines = f.readlines()
+        prof = {'text': {0: lines[0][:-1].upper(),
+                         1: lines[1][:-1].upper(),
+                         2: lines[2][:-1].upper()
+                         }
+                }
+        profile_dic['{}'.format(name_profile)] = prof
+
+    font = pygame.font.Font(font_title, 26)
+    text_surface = font.render('Credits', True, white, black)
+    screen.blit(text_surface, (SCREEN_WIDTH * 0.5, SCREEN_HEIGHT * 0.26))
+    # Texts
+    font = pygame.font.Font(font_text, 23)
+    for i in [0, 1]:
+        text_surface = font.render(profile_dic['Elkin']['text'][i][1:-1], True, white, black)
+        screen.blit(text_surface, (SCREEN_WIDTH * 0.405, SCREEN_HEIGHT * (0.35 + 0.05 * i)))
+    credits_1()
+    for i in [0, 1, 2]:
+        text_surface = font.render(profile_dic['Miguel']['text'][i][1:-1], True, white, black)
+        screen.blit(text_surface, (SCREEN_WIDTH * 0.405, SCREEN_HEIGHT * (0.35 + 0.05 * i)))
+    credits_2()
+    for i in [0, 1, 2]:
+        text_surface = font.render(profile_dic['Pao']['text'][i][1:-1], True, white, black)
+        screen.blit(text_surface, (SCREEN_WIDTH * 0.405, SCREEN_HEIGHT * (0.35 + 0.05 * i)))
+    credits_3()
+    for i in [0, 1, 2]:
+        text_surface = font.render(profile_dic['Ramona']['text'][i][1:-1], True, white, black)
+        screen.blit(text_surface, (SCREEN_WIDTH * 0.405, SCREEN_HEIGHT * (0.35 + 0.05 * i)))
+    credits_4()
+    for i in [0, 1, 2]:
+        text_surface = font.render(profile_dic['Final_words']['text'][i][1:-1], True, white, black)
+        screen.blit(text_surface, (SCREEN_WIDTH * 0.405, SCREEN_HEIGHT * (0.35 + 0.05 * i)))
+    credits_1()
+    pygame.time.delay(2500)
+    draw_cover_to_instructions()
 
 
 # Full body

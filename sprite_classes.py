@@ -8,7 +8,7 @@ import pygame
 scaling = 0.85
 FR = 27  # Speed animation starts once selected
 FRA = 25  # Speed animation and
-SCREEN_WIDTH = 1250
+SCREEN_WIDTH = 800
 SCREEN_HEIGHT = SCREEN_WIDTH * scaling
 
 black = (0, 0, 0)
@@ -567,7 +567,7 @@ class Credits2(pygame.sprite.Sprite):
         super(Credits2, self).__init__()
         self.images = []
         count = 0
-        array = glob.glob(os.path.join(path_main_design, 'credits', 'Pao', "*.png"))
+        array = glob.glob(os.path.join(path_main_design, 'credits', 'Miguel', "*.png"))
         array.sort(key=lambda f: int(re.sub('\D', '', f)))
         for star in array:
             count += 1
@@ -591,7 +591,7 @@ class Credits3(pygame.sprite.Sprite):
         super(Credits3, self).__init__()
         self.images = []
         count = 0
-        array = glob.glob(os.path.join(path_main_design, 'credits', 'Miguel', "*.png"))
+        array = glob.glob(os.path.join(path_main_design, 'credits', 'Pao', "*.png"))
         array.sort(key=lambda f: int(re.sub('\D', '', f)))
         for star in array:
             count += 1
