@@ -376,7 +376,10 @@ def text_ani(string, coordinates):
         screen.blit(text, text.get_rect(topleft=(x, y)).move(40, 0))
         pygame.display.update()  # update only the text just added without removing previous lines.
         if string[letter] != ' ':
-            mixer.Channel(0).play(mixer.Sound('music/typing_sound_3.wav'))
+            sound = pygame.mixer.Sound("music/typing_sound_3.wav")
+            channel = pygame.mixer.Channel(0)
+            channel.play(sound, -1)
+            channel.set_volume(0.15)
             pygame.time.wait(20)
             mixer.stop()
         letter += 1
@@ -463,7 +466,7 @@ def starting_menu():
         screen.blit(blink_surface, blink_rect)
         draw_cover()
     draw_image(bar_score, (SCREEN_WIDTH * 0.376, SCREEN_HEIGHT * 0.728))
-    draw_cover_to_instructions()
+    #draw_cover_to_instructions()
 
 
 def instructions():
@@ -483,7 +486,7 @@ def instructions():
 
         draw_controllers()
     pygame.mixer.music.stop()
-    draw_cover_to_instructions()
+    #draw_cover_to_instructions()
     draw_image(background2, (0, 0))
 
 
@@ -492,7 +495,7 @@ def instructions_2():
     pygame.mixer.music.play(loops=-1)
     draw_controllers_2()
     pygame.mixer.music.stop()
-    draw_cover_to_instructions()
+    #draw_cover_to_instructions()
     draw_image(background2, (0, 0))
 
 
@@ -560,7 +563,6 @@ def run_profiles(profiles_dictionary):
         pygame.mixer.music.play(loops=-1)
         draw_image(profiles_dictionary[profile]['image'], (SCREEN_WIDTH / 2.655, SCREEN_HEIGHT / 10))
         pygame.time.delay(1000)
-        # draw_opening()
         display_text_info(profiles_dictionary[profile]['name'],
                           profiles_dictionary[profile]['age'],
                           (SCREEN_WIDTH * 0.40, SCREEN_HEIGHT * 0.505),
@@ -660,7 +662,7 @@ def ending_screen(profiles_dictionary):
             mixer.stop()
         run = False
     pygame.time.delay(3000)
-    draw_cover_to_instructions()
+    # draw_cover_to_instructions()
 
 
 def save_dictionary(results):
@@ -711,7 +713,7 @@ def Credits():
     credits_1()
     pygame.time.delay(2000)
     pygame.mixer.music.stop()
-    draw_cover_to_instructions()
+    #draw_cover_to_instructions()
 
 
 # Full body
