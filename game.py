@@ -455,7 +455,6 @@ def starting_menu():
         screen.blit(blink_surface, blink_rect)
         draw_cover()
     draw_image(bar_score, (SCREEN_WIDTH * 0.376, SCREEN_HEIGHT * 0.728))
-    #draw_cover_to_instructions()
 
 
 def instructions():
@@ -475,7 +474,6 @@ def instructions():
 
         draw_controllers()
     pygame.mixer.music.stop()
-    #draw_cover_to_instructions()
     draw_image(background2, (0, 0))
 
 
@@ -484,7 +482,6 @@ def instructions_2():
     pygame.mixer.music.play(loops=-1)
     draw_controllers_2()
     pygame.mixer.music.stop()
-    #draw_cover_to_instructions()
     draw_image(background2, (0, 0))
 
 
@@ -587,6 +584,7 @@ def run_profiles(profiles_dictionary):
                         scored = True
                         mixer.Sound('music/one_star.wav').play()
                         draw_selection_one_stars()
+                        draw_image(bar_score, (SCREEN_WIDTH * 0.376, SCREEN_HEIGHT * 0.728))
                         draw_image(text_space, (SCREEN_WIDTH * 0.3675, SCREEN_HEIGHT * 0.553))
                         pygame.time.delay(500)
                         draw_image(bar, (SCREEN_WIDTH * 0.3755, SCREEN_HEIGHT * 0.4956))
@@ -596,6 +594,7 @@ def run_profiles(profiles_dictionary):
                         scored = True
                         mixer.Sound('music/two_stars.wav').play()
                         draw_selection_two_stars()
+                        draw_image(bar_score, (SCREEN_WIDTH * 0.376, SCREEN_HEIGHT * 0.728))
                         draw_image(text_space, (SCREEN_WIDTH * 0.3675, SCREEN_HEIGHT * 0.553))
                         draw_image(bar, (SCREEN_WIDTH * 0.3755, SCREEN_HEIGHT * 0.4956))
                         mixer.stop()
@@ -604,6 +603,7 @@ def run_profiles(profiles_dictionary):
                         scored = True
                         mixer.Sound('music/three_stars.wav').play()
                         draw_selection_three_stars()
+                        draw_image(bar_score, (SCREEN_WIDTH * 0.376, SCREEN_HEIGHT * 0.728))
                         draw_image(text_space, (SCREEN_WIDTH * 0.3675, SCREEN_HEIGHT * 0.553))
                         draw_image(bar, (SCREEN_WIDTH * 0.3755, SCREEN_HEIGHT * 0.4956))
                         mixer.stop()
@@ -651,7 +651,6 @@ def ending_screen(profiles_dictionary):
             mixer.stop()
         run = False
     pygame.time.delay(3000)
-    # draw_cover_to_instructions()
 
 
 def save_dictionary(results):
@@ -703,7 +702,6 @@ def Credits():
     credits_1()
     pygame.time.delay(2000)
     pygame.mixer.music.stop()
-    #draw_cover_to_instructions()
 
 
 # Full body
