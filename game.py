@@ -25,7 +25,9 @@ background = pygame.image.load(path_main_design + 'Tinder_egg_screen_full.png').
 background = pygame.transform.smoothscale(background, (SCREEN_WIDTH, SCREEN_HEIGHT))
 background2 = pygame.image.load(path_main_design + 'Tinder_egg_screen_full_2.png').convert_alpha()
 background2 = pygame.transform.smoothscale(background2, (SCREEN_WIDTH, SCREEN_HEIGHT))
-
+background3 = pygame.image.load(os.path.join(path_main_design, 'cortinilla_media',
+                                             'to_dark', "cortinilla_82.png")).convert_alpha()
+background3 = pygame.transform.smoothscale(background3, (SCREEN_WIDTH * 0.4676, SCREEN_HEIGHT * 0.612))
 # score
 scoring = pygame.image.load(path_main_design + 'Score_Frames.png').convert_alpha()
 scoring = pygame.transform.smoothscale(scoring, (SCREEN_WIDTH * 0.4676, SCREEN_HEIGHT * 0.612))
@@ -44,7 +46,6 @@ controllers_group = pygame.sprite.Group(Controllers())
 intro_1_group = pygame.sprite.Group(Stars1())
 intro_2_group = pygame.sprite.Group(Stars2())
 cover_group = pygame.sprite.Group(Cover())
-group_open = pygame.sprite.Group(Opening())
 # Closing
 close_profile_1 = pygame.sprite.Group(Close1())
 close_profile_2 = pygame.sprite.Group(Close2())
@@ -164,18 +165,6 @@ def draw_cover_to_instructions():
         cover_to_instructions.draw(screen)
         pygame.display.update()
         clock.tick(80)
-
-
-# Opening
-def draw_opening():
-    # Creating the sprites and groups
-    clock = pygame.time.Clock()
-    for _ in range(Opening().numb_images - 1):
-        group_open.update()
-        group_open.draw(screen)
-        pygame.display.update()
-        draw_image(background, (0, 0))
-        clock.tick(30)
 
 
 # Closing
@@ -674,6 +663,7 @@ def save_dictionary(results):
 
 
 def Credits():
+    draw_image(background3, (SCREEN_WIDTH / 2.71, SCREEN_HEIGHT / 10.8))
     pygame.mixer.music.load('music/credits_song.wav')
     pygame.mixer.music.play(loops=-1)
     profile_dic = {}

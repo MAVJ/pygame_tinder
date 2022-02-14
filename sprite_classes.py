@@ -189,30 +189,6 @@ class ThreeStars(pygame.sprite.Sprite):
         self.image = self.images[self.index]
 
 
-class Opening(pygame.sprite.Sprite):
-    def __init__(self):
-        super(Opening, self).__init__()
-        self.images = []
-        count = 0
-        array = glob.glob(os.path.join(path_main_design, 'big_curtain', 'to_intro', "*.png"))
-        array.sort(key=lambda f: int(re.sub('\D', '', f)))
-        for star in array:
-            count += 1
-            image = pygame.image.load(star).convert_alpha()
-            image = pygame.transform.smoothscale(image, (SCREEN_WIDTH * 0.4676, SCREEN_HEIGHT * 0.612))
-            self.images.append(image)
-        self.index = 0
-        self.numb_images = count
-        self.image = self.images[self.index]
-        self.rect = pygame.Rect(SCREEN_WIDTH / 2.71, SCREEN_HEIGHT / 10.8, 150, 198)
-
-    def update(self):
-        self.index += 1
-        if self.index == len(self.images):
-            self.index = 0
-        self.image = self.images[self.index]
-
-
 #################################################################################################################
 
 class Covertoinstructions(pygame.sprite.Sprite):
