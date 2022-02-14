@@ -35,6 +35,9 @@ bar = pygame.transform.smoothscale(bar, (SCREEN_WIDTH * 0.4676 * 0.97, SCREEN_HE
 # text_space
 text_space = pygame.image.load(path_main_design + 'text_space.png').convert_alpha()
 text_space = pygame.transform.smoothscale(text_space, (SCREEN_WIDTH * 0.4676, SCREEN_HEIGHT * 0.612 * 0.25))
+# score_screen
+bar_score = pygame.image.load(path_main_design + 'score_bar_black.png').convert_alpha()
+bar_score = pygame.transform.smoothscale(bar_score, (SCREEN_WIDTH * 0.452, SCREEN_HEIGHT * 0.096))
 
 # Define sprite groups
 controllers_group = pygame.sprite.Group(Controllers())
@@ -145,7 +148,7 @@ def draw_controllers():
 def draw_controllers_2():
     # Creating the sprites and groups
     clock = pygame.time.Clock()
-    for _ in range(Controllers().numb_images * 2):
+    for _ in range(Controllers().numb_images * 4):
         controllers_group.update()
         controllers_group.draw(screen)
         pygame.display.update()
@@ -160,7 +163,7 @@ def draw_cover_to_instructions():
         cover_to_instructions.update()
         cover_to_instructions.draw(screen)
         pygame.display.update()
-        clock.tick(40)
+        clock.tick(80)
 
 
 # Opening
@@ -183,7 +186,7 @@ def draw_closing_1():
         close_profile_1.update()
         close_profile_1.draw(screen)
         pygame.display.update()
-        clock.tick(25)
+        clock.tick(13)
 
 
 def draw_closing_2():
@@ -193,7 +196,7 @@ def draw_closing_2():
         close_profile_2.update()
         close_profile_2.draw(screen)
         pygame.display.update()
-        clock.tick(25)
+        clock.tick(13)
 
 
 def draw_closing_3():
@@ -203,7 +206,7 @@ def draw_closing_3():
         close_profile_3.update()
         close_profile_3.draw(screen)
         pygame.display.update()
-        clock.tick(25)
+        clock.tick(13)
 
 
 def draw_closing_4():
@@ -213,7 +216,7 @@ def draw_closing_4():
         close_profile_4.update()
         close_profile_4.draw(screen)
         pygame.display.update()
-        clock.tick(25)
+        clock.tick(13)
 
 
 def draw_closing_score():
@@ -234,7 +237,7 @@ def credits_1():
         credits_elkin.update()
         credits_elkin.draw(screen)
         pygame.display.update()
-        clock.tick(15)
+        clock.tick(10)
 
 
 def credits_2():
@@ -244,7 +247,7 @@ def credits_2():
         credits_pao.update()
         credits_pao.draw(screen)
         pygame.display.update()
-        clock.tick(15)
+        clock.tick(10)
 
 
 def credits_3():
@@ -254,7 +257,7 @@ def credits_3():
         credits_miguel.update()
         credits_miguel.draw(screen)
         pygame.display.update()
-        clock.tick(15)
+        clock.tick(10)
 
 
 def credits_4():
@@ -264,17 +267,7 @@ def credits_4():
         credits_ramona.update()
         credits_ramona.draw(screen)
         pygame.display.update()
-        clock.tick(15)
-
-
-def credits_5(profile_dic):
-    # Creating the sprites and groups
-    clock = pygame.time.Clock()
-    font = pygame.font.Font(font_text, 36)
-    for i in [0, 1, 2, 3]:
-        text_surface = font.render(profile_dic['Final_words']['text'][i][1:-1], True, white, black)
-        screen.blit(text_surface, (SCREEN_WIDTH * 0.405, SCREEN_HEIGHT * (0.3 + 0.05 * i)))
-        clock.tick(15)
+        clock.tick(10)
 
 
 # Profiles
@@ -468,14 +461,15 @@ def starting_menu():
             if event.type == BLINK_EVENT:
                 blink_surface = next(blink_surfaces)
         screen.blit(blink_surface, blink_rect)
-        # pygame.display.update()
         draw_cover()
+    draw_image(bar_score, (SCREEN_WIDTH * 0.376, SCREEN_HEIGHT * 0.728))
     draw_cover_to_instructions()
 
 
 def instructions():
     click_to_play = False
-    # draw_cover_to_instructions()
+    pygame.mixer.music.load('music/pupulos_just_drums.wav')
+    pygame.mixer.music.play(loops=-1)
     while not click_to_play:
 
         for event in pygame.event.get():
@@ -488,8 +482,16 @@ def instructions():
                     click_to_play = True
 
         draw_controllers()
+    pygame.mixer.music.stop()
+    draw_cover_to_instructions()
+    draw_image(background2, (0, 0))
 
-    # draw_closing_score()
+
+def instructions_2():
+    pygame.mixer.music.load('music/pupulos_just_drums.wav')
+    pygame.mixer.music.play(loops=-1)
+    draw_controllers_2()
+    pygame.mixer.music.stop()
     draw_cover_to_instructions()
     draw_image(background2, (0, 0))
 
@@ -618,6 +620,7 @@ def run_profiles(profiles_dictionary):
             if elapsed_time > time_out:
                 main()
         pygame.mixer.music.stop()
+        mixer.Sound('music/cortinilla_down.wav').play()
         if i == 0:
             draw_closing_1()
         elif i == 1:
@@ -634,26 +637,29 @@ def run_profiles(profiles_dictionary):
             draw_closing_3()
         elif i == 7:
             draw_closing_4()
-        pygame.time.delay(2000)
+
+        pygame.time.delay(1250)
+        mixer.stop()
 
 
 def ending_screen(profiles_dictionary):
     # draw_closing_score()
-    # draw_cover_to_instructions()
     draw_image(scoring, (SCREEN_WIDTH / 2.71, SCREEN_HEIGHT / 10.8))
     pygame.time.delay(100)
     run = True
     while run:
         sort_orders = sorted(profiles_dictionary.items(), key=lambda x: x[1]['score'], reverse=False)
         for i in range(len(sort_orders)):
-            pygame.time.delay(1000)
             draw_image(sort_orders[i][1]['mini_image'], (SCREEN_WIDTH * 0.39, SCREEN_HEIGHT * (1 - 0.0725 * i) - 250))
+            mixer.Sound('music/positions/position_{}.wav'.format(8-i)).play()
             display_score_info(sort_orders[i][1]['name'],
                                sort_orders[i][1]['score'],
                                SCREEN_HEIGHT * (1 - 0.0725 * i) - 245,
                                white)
+            pygame.time.delay(1350)
+            mixer.stop()
         run = False
-    pygame.time.delay(5000)
+    pygame.time.delay(3000)
     draw_cover_to_instructions()
 
 
@@ -666,6 +672,8 @@ def save_dictionary(results):
 
 
 def Credits():
+    pygame.mixer.music.load('music/credits_song.wav')
+    pygame.mixer.music.play(loops=-1)
     profile_dic = {}
     names = os.listdir('display_animations/credits/')
     for name_profile in names:
@@ -679,32 +687,30 @@ def Credits():
                 }
         profile_dic['{}'.format(name_profile)] = prof
 
-    font = pygame.font.Font(font_title, 26)
-    text_surface = font.render('Credits', True, white, black)
-    screen.blit(text_surface, (SCREEN_WIDTH * 0.5, SCREEN_HEIGHT * 0.26))
     # Texts
     font = pygame.font.Font(font_text, 23)
     for i in [0, 1]:
         text_surface = font.render(profile_dic['Elkin']['text'][i][1:-1], True, white, black)
-        screen.blit(text_surface, (SCREEN_WIDTH * 0.405, SCREEN_HEIGHT * (0.35 + 0.05 * i)))
+        screen.blit(text_surface, (SCREEN_WIDTH * 0.405, SCREEN_HEIGHT * (0.3 + 0.05 * i)))
     credits_1()
     for i in [0, 1, 2]:
         text_surface = font.render(profile_dic['Miguel']['text'][i][1:-1], True, white, black)
-        screen.blit(text_surface, (SCREEN_WIDTH * 0.405, SCREEN_HEIGHT * (0.35 + 0.05 * i)))
+        screen.blit(text_surface, (SCREEN_WIDTH * 0.405, SCREEN_HEIGHT * (0.3 + 0.05 * i)))
     credits_2()
     for i in [0, 1, 2]:
         text_surface = font.render(profile_dic['Pao']['text'][i][1:-1], True, white, black)
-        screen.blit(text_surface, (SCREEN_WIDTH * 0.405, SCREEN_HEIGHT * (0.35 + 0.05 * i)))
+        screen.blit(text_surface, (SCREEN_WIDTH * 0.405, SCREEN_HEIGHT * (0.3 + 0.05 * i)))
     credits_3()
     for i in [0, 1, 2]:
         text_surface = font.render(profile_dic['Ramona']['text'][i][1:-1], True, white, black)
-        screen.blit(text_surface, (SCREEN_WIDTH * 0.405, SCREEN_HEIGHT * (0.35 + 0.05 * i)))
+        screen.blit(text_surface, (SCREEN_WIDTH * 0.405, SCREEN_HEIGHT * (0.3 + 0.05 * i)))
     credits_4()
     for i in [0, 1, 2]:
         text_surface = font.render(profile_dic['Final_words']['text'][i][1:-1], True, white, black)
-        screen.blit(text_surface, (SCREEN_WIDTH * 0.405, SCREEN_HEIGHT * (0.35 + 0.05 * i)))
+        screen.blit(text_surface, (SCREEN_WIDTH * 0.405, SCREEN_HEIGHT * (0.3 + 0.05 * i)))
     credits_1()
-    pygame.time.delay(2500)
+    pygame.time.delay(2000)
+    pygame.mixer.music.stop()
     draw_cover_to_instructions()
 
 
@@ -724,7 +730,7 @@ def main():
         # Run menu
         starting_menu()
         # Display instructions
-        instructions()
+        instructions_2()
         # Define profiles from folders structure
         profile_dic = get_profiles()
         # Star running profiles and get scores
