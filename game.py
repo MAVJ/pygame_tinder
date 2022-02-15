@@ -149,7 +149,7 @@ def draw_controllers():
 def draw_controllers_2():
     # Creating the sprites and groups
     clock = pygame.time.Clock()
-    for _ in range(Controllers().numb_images * 4):
+    for _ in range(Controllers().numb_images * 3):
         controllers_group.update()
         controllers_group.draw(screen)
         pygame.display.update()
@@ -553,11 +553,13 @@ def run_profiles(profiles_dictionary):
                           profiles_dictionary[profile]['age'],
                           (SCREEN_WIDTH * 0.40, SCREEN_HEIGHT * 0.505),
                           white)
+        text_surface = pygame.font.Font(font_title, 25).render("({}/8)".format(i+1), True, white)
+        screen.blit(text_surface, (SCREEN_WIDTH * 0.71, SCREEN_HEIGHT * 0.505))
         plot_split_text(profiles_dictionary[profile]['text'][random.randint(0, 2)], 23,
                         (SCREEN_WIDTH * 0.605 - 200, SCREEN_HEIGHT * 0.572 - 12))
         scored = False
         start_time = time.time()
-        time_out = 240
+        time_out = 120
         while not scored:
             if profiles_dictionary[profile]['id'] == 'Kino':
                 reproduce_kino()
