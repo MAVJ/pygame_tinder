@@ -554,7 +554,7 @@ def run_profiles(profiles_dictionary):
                           (SCREEN_WIDTH * 0.40, SCREEN_HEIGHT * 0.505),
                           white)
         text_surface = pygame.font.Font(font_title, 25).render("({}/8)".format(i+1), True, white)
-        screen.blit(text_surface, (SCREEN_WIDTH * 0.71, SCREEN_HEIGHT * 0.505))
+        screen.blit(text_surface, (SCREEN_WIDTH * 0.7, SCREEN_HEIGHT * 0.505))
         plot_split_text(profiles_dictionary[profile]['text'][random.randint(0, 2)], 23,
                         (SCREEN_WIDTH * 0.605 - 200, SCREEN_HEIGHT * 0.572 - 12))
         scored = False
